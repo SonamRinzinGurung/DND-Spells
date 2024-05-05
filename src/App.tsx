@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { SpellCard } from "./components";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,17 +41,11 @@ const App = () => {
 
       <div className="flex flex-col gap-8 p-6">
         {isSuccess &&
-          data.map((s) => (
-            <div className="border p-2" key={s.index}>
-              <h2>{s.name}</h2>
-              <p>range {s.range}</p>
-              <p>duration {s.duration}</p>
-            </div>
-          ))}
+          data.map((spell) => <SpellCard key={spell.index} spell={spell} />)}
       </div>
       {isSuccess && (
         <div className="flex gap-2">
-          {[...Array(Math.ceil(totalSpells / itemsPerPage))].map((e, i) => (
+          {[...Array(Math.ceil(totalSpells / itemsPerPage))].map((_, i) => (
             <button key={i} onClick={() => paginate(i + 1)}>
               {i + 1}
             </button>
