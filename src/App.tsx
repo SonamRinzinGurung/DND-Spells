@@ -36,19 +36,23 @@ const App = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <main>
-      <h1 className="text-center text-bold text-4xl p-2 font-title tracking-tight">
-        DND Spells
+    <main className="mt-6 mb-10">
+      <h1 className="text-center p-2 mb-2 font-title font-semibold tracking-tight text-primary">
+        DND <span className="text-primaryDark">Spells</span>
       </h1>
 
-      <div className="flex flex-col gap-8 p-6">
+      <div className="flex gap-8 p-6 flex-wrap justify-center">
         {isSuccess &&
           data.map((spell) => <SpellCard key={spell.index} spell={spell} />)}
       </div>
       {isSuccess && (
-        <div className="flex gap-2">
+        <div className="flex gap-4 justify-center flex-wrap mt-4">
           {[...Array(Math.ceil(totalSpells / itemsPerPage))].map((_, i) => (
-            <button key={i} onClick={() => paginate(i + 1)}>
+            <button
+              className="border-2 p-2 rounded-full w-10 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+              key={i}
+              onClick={() => paginate(i + 1)}
+            >
               {i + 1}
             </button>
           ))}
