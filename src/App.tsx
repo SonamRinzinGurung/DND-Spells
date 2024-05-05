@@ -37,7 +37,9 @@ const App = () => {
 
   return (
     <main>
-      <h1 className="text-center text-bold text-2xl p-2">DND Spells</h1>
+      <h1 className="text-center text-bold text-4xl p-2 font-title tracking-tight">
+        DND Spells
+      </h1>
 
       <div className="flex flex-col gap-8 p-6">
         {isSuccess &&

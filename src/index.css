@@ -1,3 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Freeman&family=Lato:wght@100;300;400&family=Teko:wght@300..700&family=Changa:wght@200..800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-image: url("./assets/texture-bg.png");
+  background-size: cover;
+  font-family: "Lato", sans-serif;
+}
