@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { SpellCard } from "./components";
+import { SpellCard } from "../components";
 
-const App = () => {
+const Homepage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const [totalSpells, setTotalSpells] = useState(0);
@@ -62,4 +62,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Homepage;

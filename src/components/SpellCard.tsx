@@ -1,8 +1,14 @@
 import { Spell } from "../types";
 
 const SpellCard = ({ spell }: { spell: Spell }) => {
+  const handleSaveSpell = () => {
+    console.log(spell);
+  };
   return (
-    <div className="flex flex-col border-4 border-primary p-4 lg:w-5/12 rounded-sm">
+    <div className="relative flex flex-col border-4 border-primary p-4 lg:w-5/12 rounded-sm">
+      <button onClick={handleSaveSpell} className="absolute right-6">
+        ❤️
+      </button>
       <h2 className="font-heading">{spell.name}</h2>
       <p className="font-subheading text-primary font-semibold text-xl lg:text-2xl tracking-tight">
         {spell.level > 0 && `Level ${spell.level} `}
