@@ -59,8 +59,11 @@ const SpellCard = ({
     };
   };
   return (
-    <div className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm">
-      <button onClick={handleFavorite} className="absolute right-6">
+    <div
+      onDoubleClick={() => addFav(spell)}
+      className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm"
+    >
+      <button onClick={handleFavorite} className="absolute right-6 lg:text-xl">
         {isFavorite ? "❤️" : "🤍"}
       </button>
       <h2 className="font-heading">{spell.name}</h2>
