@@ -1,13 +1,67 @@
 import { Spell } from "../types";
 
-const SpellCard = ({ spell }: { spell: Spell }) => {
-  const handleSaveSpell = () => {
-    console.log(spell);
+const SpellCard = ({
+  spell,
+  isFavorite,
+  removeFav,
+  addFav,
+}: {
+  spell: Spell;
+  isFavorite: boolean;
+  removeFav: (spell: Spell) => void;
+  addFav: (spell: Spell) => void;
+}) => {
+  const handleFavorite = () => {
+    const openRequest = indexedDB.open("spells");
+    openRequest.onupgradeneeded = () => {
+      const db = openRequest.result;
+
+      db.onversionchange = function () {
+        db.close();
+        alert("Database is outdated, please reload the page.");
+      };
+
+      if (!db.objectStoreNames.contains("fav_spells")) {
+        db.createObjectStore("fav_spells", { keyPath: "index" });
+      }
+    };
+
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      const transaction = db.transaction("fav_spells", "readwrite");
+      const objectStore = transaction.objectStore("fav_spells");
+      let request: IDBRequest;
+      if (isFavorite) {
+        request = objectStore.delete(spell.index);
+      } else {
+        request = objectStore.add(spell);
+      }
+
+      request.onsuccess = () => {
+        if (isFavorite) {
+          removeFav(spell);
+        } else {
+          addFav(spell);
+        }
+      };
+      request.onerror = (event) => {
+        // ConstraintError occurs when an object with the same id already exists
+        if (request?.error?.name == "ConstraintError") {
+          console.log("Spell with such index already exists"); // handle the error
+          event.preventDefault(); // don't abort the transaction
+        } else {
+          console.log("error", event);
+        }
+      };
+    };
+    openRequest.onerror = (event) => {
+      console.log("error: ", event);
+    };
   };
   return (
-    <div className="relative flex flex-col border-4 border-primary p-4 lg:w-5/12 rounded-sm">
-      <button onClick={handleSaveSpell} className="absolute right-6">
-        ❤️
+    <div className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm">
+      <button onClick={handleFavorite} className="absolute right-6">
+        {isFavorite ? "❤️" : "🤍"}
       </button>
       <h2 className="font-heading">{spell.name}</h2>
       <p className="font-subheading text-primary font-semibold text-xl lg:text-2xl tracking-tight">

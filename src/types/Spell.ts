@@ -1,4 +1,5 @@
 type Spell = {
+  index: string;
   name: string;
   range: string;
   duration: string;
