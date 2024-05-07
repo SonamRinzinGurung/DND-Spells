@@ -1,31 +1,19 @@
 import { Spell } from "../types";
+import openDatabase from "../db/openDatabase";
 
 const SpellCard = ({
   spell,
   isFavorite,
-  removeFav,
-  addFav,
+  removeFavState,
+  addFavState,
 }: {
   spell: Spell;
   isFavorite: boolean;
-  removeFav: (spell: Spell) => void;
-  addFav: (spell: Spell) => void;
+  removeFavState: (spell: Spell) => void;
+  addFavState: (spell: Spell) => void;
 }) => {
   const handleFavorite = () => {
-    const openRequest = indexedDB.open("spells");
-    openRequest.onupgradeneeded = () => {
-      const db = openRequest.result;
-
-      db.onversionchange = function () {
-        db.close();
-        alert("Database is outdated, please reload the page.");
-      };
-
-      if (!db.objectStoreNames.contains("fav_spells")) {
-        db.createObjectStore("fav_spells", { keyPath: "index" });
-      }
-    };
-
+    const openRequest = openDatabase();
     openRequest.onsuccess = () => {
       const db = openRequest.result;
       const transaction = db.transaction("fav_spells", "readwrite");
@@ -39,29 +27,26 @@ const SpellCard = ({
 
       request.onsuccess = () => {
         if (isFavorite) {
-          removeFav(spell);
+          removeFavState(spell);
         } else {
-          addFav(spell);
+          addFavState(spell);
         }
       };
       request.onerror = (event) => {
         // ConstraintError occurs when an object with the same id already exists
         if (request?.error?.name == "ConstraintError") {
-          console.log("Spell with such index already exists"); // handle the error
+          console.log("Spell with such index already exists");
           event.preventDefault(); // don't abort the transaction
         } else {
           console.log("error", event);
         }
       };
     };
-    openRequest.onerror = (event) => {
-      console.log("error: ", event);
-    };
   };
   return (
     <div
-      onDoubleClick={() => addFav(spell)}
-      className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm"
+      onDoubleClick={handleFavorite}
+      className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm cursor-pointer"
     >
       <button onClick={handleFavorite} className="absolute right-6 lg:text-xl">
         {isFavorite ? "❤️" : "🤍"}

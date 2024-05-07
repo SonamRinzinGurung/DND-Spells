@@ -1,46 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { SpellCard } from "../components";
-import { Spell } from "../types";
+import useHandleFavorites from "../db/useHandleFavorites";
 
 const Homepage = () => {
-  const [favSpells, setFavSpells] = useState<Spell[]>([]);
-
-  useEffect(() => {
-    const openRequest = indexedDB.open("spells");
-    openRequest.onerror = (event) => {
-      console.log("error: ", event);
-    };
-    let db: IDBDatabase;
-    openRequest.onupgradeneeded = () => {
-      db = openRequest.result;
-
-      db.onversionchange = function () {
-        db.close();
-        alert("Database is outdated, please reload the page.");
-      };
-
-      if (!db.objectStoreNames.contains("fav_spells")) {
-        db.createObjectStore("fav_spells", { keyPath: "index" });
-      }
-    };
-
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      const transaction = db.transaction("fav_spells", "readwrite");
-      const objectStore = transaction.objectStore("fav_spells");
-      const request = objectStore.getAll();
-      request.onsuccess = () => {
-        setFavSpells(request.result);
-      };
-      request.onerror = (event) => {
-        console.log(event);
-      };
-    };
-  }, []);
-
+  const { favSpells, addFavState, removeFavState } = useHandleFavorites();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
   const [totalSpells, setTotalSpells] = useState(0);
   const BASE_URL = "https://www.dnd5eapi.co";
 
@@ -71,15 +37,6 @@ const Homepage = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const removeFav = (spell: Spell) => {
-    setFavSpells((prev: Spell[]) =>
-      prev.filter((val: Spell) => val.index !== spell.index)
-    );
-  };
-  const addFav = (spell: Spell) => {
-    setFavSpells((prev: Spell[]) => [...prev, spell]);
-  };
-
   return (
     <main className="mt-6 mb-10">
       <h1 className="text-center p-2 mb-2 font-title font-semibold tracking-tight text-primary">
@@ -92,9 +49,9 @@ const Homepage = () => {
             <SpellCard
               key={spell.index}
               spell={spell}
-              isFavorite={favSpells.some((i) => i.index === spell.index)}
-              removeFav={removeFav}
-              addFav={addFav}
+              isFavorite={favSpells.some((fav) => fav.index === spell.index)}
+              removeFavState={removeFavState}
+              addFavState={addFavState}
             />
           ))}
       </div>
