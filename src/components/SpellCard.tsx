@@ -1,5 +1,6 @@
+import { useEffect, useRef, useCallback } from "react";
 import { Spell } from "../types";
-import openDatabase from "../db/openDatabase";
+import toggleFavoriteSpell from "../db/toggleFavoriteSpell";
 
 const SpellCard = ({
   spell,
@@ -12,44 +13,37 @@ const SpellCard = ({
   removeFavState: (spell: Spell) => void;
   addFavState: (spell: Spell) => void;
 }) => {
-  const handleFavorite = (isDoubleClick: boolean) => {
-    const openRequest = openDatabase();
-    openRequest.onsuccess = () => {
-      const db = openRequest.result;
-      const transaction = db.transaction("fav_spells", "readwrite");
-      const objectStore = transaction.objectStore("fav_spells");
-      let request: IDBRequest;
-      if (isFavorite && !isDoubleClick) {
-        request = objectStore.delete(spell.index);
-      } else {
-        request = objectStore.add(spell);
-      }
+  const cardRef = useRef<HTMLDivElement>(null);
 
-      request.onsuccess = () => {
-        if (isFavorite && !isDoubleClick) {
-          removeFavState(spell);
-        } else {
-          addFavState(spell);
-        }
-      };
-      request.onerror = (event) => {
-        // ConstraintError occurs when an object with the same id already exists
-        if (request?.error?.name == "ConstraintError") {
-          console.log("Spell with such index already exists");
-          event.preventDefault(); // don't abort the transaction
-        } else {
-          console.log("error", event);
-        }
-      };
+  const toggleFavorite = useCallback(
+    (isDoubleClick: boolean) => {
+      toggleFavoriteSpell(
+        spell,
+        isFavorite,
+        removeFavState,
+        addFavState,
+        isDoubleClick
+      );
+    },
+    [spell, isFavorite, addFavState, removeFavState]
+  );
+
+  useEffect(() => {
+    const card = cardRef.current;
+
+    card?.addEventListener("dblclick", () => toggleFavorite(true));
+    return () => {
+      card?.removeEventListener("dblclick", () => toggleFavorite(true));
     };
-  };
+  }, [toggleFavorite]);
+
   return (
     <div
-      onDoubleClick={() => handleFavorite(true)}
+      ref={cardRef}
       className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm cursor-pointer"
     >
       <button
-        onClick={() => handleFavorite(false)}
+        onClick={() => toggleFavorite(false)}
         className="absolute right-6 lg:text-xl"
       >
         {isFavorite ? "❤️" : "🤍"}
