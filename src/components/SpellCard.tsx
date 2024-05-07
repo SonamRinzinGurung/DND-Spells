@@ -12,21 +12,21 @@ const SpellCard = ({
   removeFavState: (spell: Spell) => void;
   addFavState: (spell: Spell) => void;
 }) => {
-  const handleFavorite = () => {
+  const handleFavorite = (isDoubleClick: boolean) => {
     const openRequest = openDatabase();
     openRequest.onsuccess = () => {
       const db = openRequest.result;
       const transaction = db.transaction("fav_spells", "readwrite");
       const objectStore = transaction.objectStore("fav_spells");
       let request: IDBRequest;
-      if (isFavorite) {
+      if (isFavorite && !isDoubleClick) {
         request = objectStore.delete(spell.index);
       } else {
         request = objectStore.add(spell);
       }
 
       request.onsuccess = () => {
-        if (isFavorite) {
+        if (isFavorite && !isDoubleClick) {
           removeFavState(spell);
         } else {
           addFavState(spell);
@@ -45,10 +45,13 @@ const SpellCard = ({
   };
   return (
     <div
-      onDoubleClick={handleFavorite}
+      onDoubleClick={() => handleFavorite(true)}
       className="relative flex flex-col border-4 border-primary p-4 w-full lg:w-5/12 rounded-sm cursor-pointer"
     >
-      <button onClick={handleFavorite} className="absolute right-6 lg:text-xl">
+      <button
+        onClick={() => handleFavorite(false)}
+        className="absolute right-6 lg:text-xl"
+      >
         {isFavorite ? "❤️" : "🤍"}
       </button>
       <h2 className="font-heading">{spell.name}</h2>

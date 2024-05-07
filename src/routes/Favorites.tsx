@@ -11,7 +11,7 @@ const Favorites = () => {
       </h1>
 
       {favSpells?.length === 0 && (
-        <p className="text-3xl text-center mt-8">
+        <p className="text-xl lg:text-2xl text-center mt-8">
           You do not have any favorite spells
         </p>
       )}
