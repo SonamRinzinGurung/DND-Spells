@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { SpellCard, NavBar } from "../components";
+import { SpellCard } from "../components";
 import useHandleFavorites from "../db/useHandleFavorites";
 
 const Homepage = () => {
@@ -38,9 +38,8 @@ const Homepage = () => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <main className="mt-6 mb-10">
-      <NavBar />
-      <h1 className="text-center my-2 font-title font-semibold tracking-tight text-primary">
+    <main className="mt-2">
+      <h1 className="text-center font-title font-semibold tracking-tight text-primary">
         DND <span className="text-primaryDark">Spells</span>
       </h1>
 

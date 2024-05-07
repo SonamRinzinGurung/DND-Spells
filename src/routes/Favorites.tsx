@@ -1,13 +1,12 @@
 import useGetFavorites from "../db/useHandleFavorites";
-import { SpellCard, NavBar } from "../components";
+import { SpellCard } from "../components";
 
 const Favorites = () => {
   const { favSpells, addFavState, removeFavState } = useGetFavorites();
 
   return (
-    <main className="mt-6 mb-10">
-      <NavBar />
-      <h1 className="text-center my-2 font-title font-semibold tracking-tight text-primary">
+    <main className="mt-2">
+      <h1 className="text-center font-title font-semibold tracking-tight text-primary">
         Favorite <span className="text-primaryDark">Spells</span>
       </h1>
 
