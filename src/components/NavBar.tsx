@@ -7,8 +7,10 @@ const NavBar = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `font-semibold lg:text-lg hover:text-primaryDark ${
-              isActive ? "text-primaryDark underline" : "text-primary"
+            `font-semibold lg:text-lg hover:text-primaryDark  ${
+              isActive
+                ? "text-primaryDark p-0.25 border-b-2 border-red-800 "
+                : "text-primary"
             }`
           }
         >
@@ -18,7 +20,9 @@ const NavBar = () => {
           to="/favorites"
           className={({ isActive }) =>
             `font-semibold lg:text-lg hover:text-primaryDark ${
-              isActive ? "text-primaryDark underline" : "text-primary"
+              isActive
+                ? "text-primaryDark pb-0.25 border-b-2 border-red-800"
+                : "text-primary"
             }`
           }
         >

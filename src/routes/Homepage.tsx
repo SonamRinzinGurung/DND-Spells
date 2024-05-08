@@ -43,6 +43,14 @@ const Homepage = () => {
         DND <span className="text-primaryDark">Spells</span>
       </h1>
 
+      {!isFetching && data?.length === 0 && (
+        <div>
+          <p className="text-xl lg:text-2xl text-center mt-8 font-bold">
+            There are no spells here
+          </p>
+        </div>
+      )}
+
       <div className="flex gap-8 p-6 flex-wrap justify-center">
         {!isFetching ? (
           data?.map((spell) => (
