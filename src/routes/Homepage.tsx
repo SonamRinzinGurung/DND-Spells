@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { SpellCard, Spinner } from "../components";
+import { SpellCard, Spinner, Paginator } from "../components";
 import useHandleFavorites from "../db/useHandleFavorites";
 
 const Homepage = () => {
@@ -59,19 +59,11 @@ const Homepage = () => {
         )}
       </div>
       {!isFetching && (
-        <div className="flex gap-4 justify-center flex-wrap mt-4">
-          {[...Array(Math.ceil(totalSpells / itemsPerPage))].map(
-            (_, i: number) => (
-              <button
-                className="border-2 p-2 rounded-full w-10 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
-                key={i}
-                onClick={() => paginate(i + 1)}
-              >
-                {i + 1}
-              </button>
-            )
-          )}
-        </div>
+        <Paginator
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalSpells / itemsPerPage)}
+          paginate={paginate}
+        />
       )}
     </main>
   );
