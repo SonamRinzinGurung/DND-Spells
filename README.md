@@ -2,10 +2,15 @@
 
 This is a simple web application that allows users to view Dungeons and Dragons spells. The user can also view details about each spell, such as its description, casting time, range, components, duration, and other information. The user can save spells to their favorites list, and view their favorites list at any time. This application uses the D&D 5th Edition API to get spell data.
 
+[Live Site](https://dnd-spells.onrender.com/)
+
 ## Technologies Used
 - React
 - TypeScript
 - Tailwind CSS
+- React Query
+- indexedDB
+- React Router Dom
 
 ## Installation and Setup Instructions
 
