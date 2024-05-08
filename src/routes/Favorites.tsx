@@ -1,8 +1,23 @@
+import { useEffect, useState } from "react";
 import useGetFavorites from "../db/useHandleFavorites";
-import { SpellCard } from "../components";
+import { SpellCard, Paginator } from "../components";
+import { Spell } from "../types";
 
 const Favorites = () => {
   const { favSpells, addFavState, removeFavState } = useGetFavorites();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(favSpells.length / itemsPerPage);
+
+  const [favSpellsPage, setFavSpellsPage] = useState<Spell[]>([]);
+
+  useEffect(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    setFavSpellsPage(favSpells.slice(start, end));
+  }, [currentPage, favSpells]);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <main className="mt-2">
@@ -16,7 +31,7 @@ const Favorites = () => {
         </p>
       )}
       <div className="flex gap-8 p-6 flex-wrap justify-center">
-        {favSpells?.map((spell) => (
+        {favSpellsPage?.map((spell) => (
           <SpellCard
             key={spell.index}
             spell={spell}
@@ -26,6 +41,11 @@ const Favorites = () => {
           />
         ))}
       </div>
+      <Paginator
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+      />
     </main>
   );
 };

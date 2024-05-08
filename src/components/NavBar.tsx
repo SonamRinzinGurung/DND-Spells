@@ -8,7 +8,7 @@ const NavBar = () => {
           to="/"
           className={({ isActive }) =>
             `font-semibold lg:text-lg hover:text-primaryDark ${
-              isActive ? "text-primaryDark" : "text-primary"
+              isActive ? "text-primaryDark underline" : "text-primary"
             }`
           }
         >
@@ -18,7 +18,7 @@ const NavBar = () => {
           to="/favorites"
           className={({ isActive }) =>
             `font-semibold lg:text-lg hover:text-primaryDark ${
-              isActive ? "text-primaryDark" : "text-primary"
+              isActive ? "text-primaryDark underline" : "text-primary"
             }`
           }
         >
