@@ -49,7 +49,7 @@ const SpellCard = ({
         {spell.school.name}
         {spell.level === 0 && " cantrip"}
       </p>
-      <div className="flex gap-4 py-2 text-primary lg:text-xl border-y-2 border-primary">
+      <div className="flex justify-between gap-2 py-2 text-primary lg:text-xl border-y-2 border-primary">
         <div className="spellStat">
           <span className="text-stone-800">casting time</span>
           <span>{spell.casting_time}</span>
