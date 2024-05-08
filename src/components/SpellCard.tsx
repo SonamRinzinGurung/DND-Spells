@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
-import { Spell } from "../types";
+import type { SpellCardProps } from "../types";
 import toggleFavoriteSpell from "../db/toggleFavoriteSpell";
 
 const SpellCard = ({
@@ -7,12 +7,7 @@ const SpellCard = ({
   isFavorite,
   removeFavState,
   addFavState,
-}: {
-  spell: Spell;
-  isFavorite: boolean;
-  removeFavState: (spell: Spell) => void;
-  addFavState: (spell: Spell) => void;
-}) => {
+}: SpellCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const toggleFavorite = useCallback(

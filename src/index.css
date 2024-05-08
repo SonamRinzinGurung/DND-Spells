@@ -32,3 +32,22 @@ p {
 .spellStat {
   @apply flex flex-wrap gap-1 font-subheading;
 }
+
+.spinner {
+  animation: rotateDiv 1.5s infinite linear;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border-top: solid transparent;
+  border-left: solid #ad383a;
+  border-bottom: solid #58180d;
+  border-right: solid #ad383a;
+}
+
+@keyframes rotateDiv {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

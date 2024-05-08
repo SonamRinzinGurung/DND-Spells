@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { SpellCard } from "../components";
+import { SpellCard, Spinner } from "../components";
 import useHandleFavorites from "../db/useHandleFavorites";
 
 const Homepage = () => {
@@ -26,7 +26,7 @@ const Homepage = () => {
     );
   };
 
-  const { data, isSuccess } = useQuery(
+  const { data, isFetching } = useQuery(
     ["spells", currentPage],
     () => fetchSpells(currentPage),
     {
@@ -44,8 +44,8 @@ const Homepage = () => {
       </h1>
 
       <div className="flex gap-8 p-6 flex-wrap justify-center">
-        {isSuccess &&
-          data.map((spell) => (
+        {!isFetching ? (
+          data?.map((spell) => (
             <SpellCard
               key={spell.index}
               spell={spell}
@@ -53,9 +53,12 @@ const Homepage = () => {
               removeFavState={removeFavState}
               addFavState={addFavState}
             />
-          ))}
+          ))
+        ) : (
+          <Spinner size="medium" />
+        )}
       </div>
-      {isSuccess && (
+      {!isFetching && (
         <div className="flex gap-4 justify-center flex-wrap mt-4">
           {[...Array(Math.ceil(totalSpells / itemsPerPage))].map(
             (_, i: number) => (
